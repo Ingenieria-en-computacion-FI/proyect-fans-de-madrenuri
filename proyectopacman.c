@@ -8,7 +8,6 @@ const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
 int main(int argc, char* argv[]) {
-    // 1. Inicializar SDL2 y SDL_image
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("Error: No se pudo inicializar SDL2. SDL_Error: %s\n", SDL_GetError());
         return 1;
@@ -21,7 +20,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // 2. Crear la Ventana
+    // Crear la Ventana
     SDL_Window* window = SDL_CreateWindow(
         "Pac-Man - MSYS2 & SDL2",
         SDL_WINDOWPOS_UNDEFINED,
@@ -37,8 +36,7 @@ int main(int argc, char* argv[]) {
         SDL_Quit();
         return 1;
     }
-
-    // 3. Crear el Renderer (El pintor)
+    
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (renderer == NULL) {
         printf("Error: No se pudo crear el renderer. SDL_Error: %s\n", SDL_GetError());
@@ -47,9 +45,6 @@ int main(int argc, char* argv[]) {
         SDL_Quit();
         return 1;
     }
-
-    // 4. Cargar la imagen de los sprites (Fondo rosa)
-    // El juego buscará este archivo exactamente en la misma carpeta del .exe
     const char* imagePath = "temporal_sprites.png";
     SDL_Surface* loadedSurface = IMG_Load(imagePath);
     if (loadedSurface == NULL) {
@@ -60,10 +55,8 @@ int main(int argc, char* argv[]) {
         SDL_Quit();
         return 1;
     }
-
-    // Convertir la superficie a textura para la tarjeta gráfica
     SDL_Texture* spriteSheet = SDL_CreateTextureFromSurface(renderer, loadedSurface);
-    SDL_FreeSurface(loadedSurface); // Ya no necesitamos la superficie original
+    SDL_FreeSurface(loadedSurface); 
 
     if (spriteSheet == NULL) {
         printf("Error: No se pudo crear la textura. SDL_Error: %s\n", SDL_GetError());
@@ -74,12 +67,12 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // 5. Bucle principal del juego
+    // Bucle principal del juego
     bool quit = false;
     SDL_Event e;
 
     while (!quit) {
-        // Manejar eventos (Teclado / Cerrar ventana)
+        // Manejar eventos 
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT) {
                 quit = true;
@@ -92,7 +85,7 @@ int main(int argc, char* argv[]) {
             }
         }
 
-        // Limpiar la pantalla (Color de fondo: Negro)
+        // Limpiar la pantalla
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
@@ -101,10 +94,10 @@ int main(int argc, char* argv[]) {
 
         // Actualizar la pantalla
         SDL_RenderPresent(renderer);
-        SDL_Delay(16); // Aproximadamente 60 FPS
+        SDL_Delay(16);
     }
 
-    // 6. Limpiar memoria y salir
+    // Limpiar memoria y salir
     SDL_DestroyTexture(spriteSheet);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
