@@ -55,8 +55,6 @@ void dibujarRectangulo(int x, int y, int w, int h, int r, int g, int b) {
 }
 
 void dibujarTextoSimple(int x, int y, int numero, int r, int g, int b) {
-    /* No usamos SDL_ttf porque el PDF no permite bibliotecas extras.
-       Esta función solo dibuja barras simples para indicar números pequeños. */
     for (int i = 0; i < numero; i++) {
         dibujarRectangulo(x + i * 18, y, 14, 18, r, g, b);
     }
@@ -190,8 +188,7 @@ void intentarMoverFantasma(int indice, int df, int dc, int *seMovio) {
 void moverFantasma(int indice) {
     int seMovio = 0;
 
-    /* Persecución simple: intenta acercarse al jugador.
-       No usa IA avanzada ni búsqueda de caminos. */
+  
     if (abs(jugadorCol - fantasmas[indice].col) > abs(jugadorFila - fantasmas[indice].fila)) {
         if (jugadorCol < fantasmas[indice].col) intentarMoverFantasma(indice, 0, -1, &seMovio);
         else if (jugadorCol > fantasmas[indice].col) intentarMoverFantasma(indice, 0, 1, &seMovio);
@@ -252,8 +249,7 @@ void renderizarMapa() {
         if (texFantasma == NULL) dibujarRectangulo(fantasmas[i].col * TAM, fantasmas[i].fila * TAM, TAM, TAM, 255, 0, 0);
     }
 
-    /* Barra inferior: vidas en rojo y puntos como barras verdes.
-       Así evitamos usar SDL_ttf. */
+    /* Barra inferior: vidas en rojo y puntos como barras verdes.*/
     dibujarRectangulo(0, FILAS * TAM, ANCHO, 50, 30, 30, 30);
     dibujarTextoSimple(15, FILAS * TAM + 15, vidas, 255, 0, 0);
     dibujarTextoSimple(120, FILAS * TAM + 15, puntos / 10, 0, 255, 0);
